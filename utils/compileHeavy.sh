@@ -126,15 +126,19 @@ if [[ $COMPILE_OSX == 1 ]]
 then
 	sudo chmod -R 777 hv-out/unity/build/macos/x86_64/Release/$MACLIB
 	sudo mv -f hv-out/unity/build/macos/x86_64/Release/$MACLIB ../../Unity/Assets/Plugins/OSX/$MACLIB
+	echo "Moving wrapper into place..."
+	sudo mv -f ./hv-out/unity/build/macos/x86_64/Release/$WRAPPER ../../Unity/Assets/Plugins/$WRAPPER
 fi
 if [[ $COMPILE_IOS == 1 ]]
 then
 	sudo chmod -R 777 ./hv-out/unity/build/ios/armv7\ arm64/Release/libHv_gladly_AudioLib.a
 	sudo mv -f ./hv-out/unity/build/ios/armv7\ arm64/Release/libHv_gladly_AudioLib.a ../../Unity/Assets/Plugins/iOS/$IOSLIB
+	if [[ $COMPILE_OSX == 0 ]]
+	then
+		echo "Moving wrapper into place..."
+		sudo mv -f ./hv-out/unity/build/ios/armv7\ arm64/Release/$WRAPPER ../../Unity/Assets/Plugins/$WRAPPER
+	fi
 fi
-
-echo "Moving wrapper into place..."
-sudo mv -f ./hv-out/unity/build/macos/x86_64/Release/$WRAPPER ../../Unity/Assets/Plugins/$WRAPPER
 
 if [[ $OPEN_UNITY == 1 ]]
 then
