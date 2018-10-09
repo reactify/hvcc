@@ -59,7 +59,6 @@ done
 shift $((OPTIND -1))
 
 for val in "${multi[@]}"; do
-    echo " - $val"
     if [[ $val == IOS ]]
 	then
 		echo "Will Compile iOS"
