@@ -109,6 +109,16 @@ class PdParser:
                 else:
                     concat = (concat + " " + l) if len(concat) > 0 else l
 
+    def add_search_paths(self, search_paths):
+        count = 0;
+        if search_paths:
+            for search_path in search_paths:
+                search_dir = os.path.abspath(search_path)
+                if os.path.isdir(search_dir):
+                    self.__search_paths.append(search_dir)
+                    count += 1
+        return count
+
     def add_relative_search_directory(self, search_dir):
         search_dir = os.path.abspath(os.path.join(
             self.__search_paths[0],
@@ -143,9 +153,11 @@ class PdParser:
         """ Instantiate a PdGraph from a file.
             Note that obj_args does not include $0.
             @param pd_graph_class  The python class to handle specific graph types
+            @param is_root if True, the folder containing file_path is assumed
+            to be the root path of the whole systen. If False, the first entry of
+            self.__search_paths will be the root.
         """
-        # add main patch directory. The first entry of self.__search_paths is
-        # assumed to be the root path of the whole system
+        # add main patch directory.
 
         if is_root:
             self.__search_paths.append(os.path.dirname(file_path))

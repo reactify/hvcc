@@ -43,6 +43,7 @@ class pd2hv:
         tick = time.time()
 
         parser = PdParser() # create parser state
+        parser.add_search_paths(search_paths)
         pd_graph = parser.graph_from_file(pd_path)
         notices = pd_graph.get_notices()
 
