@@ -4,7 +4,7 @@ usage ()
 {
 	echo ""
 	echo "Required arguments:"
-	echo " -p : Patch name"
+	echo " -n : Patch name"
 	echo " -t : Target to compile. Available options = IOS, OSX, ALL"
 	echo ""
 	echo "Additional optional arguments"
@@ -33,9 +33,9 @@ COMPILE_OSX=0
 COMPILE_IOS=0
 TARGET_PRESENT=0
 
-while getopts ":p:v:f:u:o:q:t:" opt; do
+while getopts ":n:v:f:u:o:q:t:" opt; do
 	case "$opt" in
-		p)
+		n)
 			# we found a patch name
 			echo "Patch name : $OPTARG"
 			PATCH_NAME="$OPTARG"
@@ -116,7 +116,7 @@ fi
 XCODE_COMMAND=$XCODE_COMMAND" -quiet"
 
 echo "Compiling patch..."
-python ~/workspace/enzienaudio/hvcc/hvcc.py ./_main.pd -g unity -o hv-out/ -n $PATCH_NAME 
+python ~/workspace/enzienaudio/hvcc-reactify/hvcc.py ./_main.pd -g unity -o hv-out/ -n $PATCH_NAME 
 
 echo "Building Xcode project..."
 $XCODE_COMMAND
