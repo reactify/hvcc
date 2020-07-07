@@ -29,11 +29,12 @@ PLUGIN_FOLDER=""
 UNITYPLUGIN_PATH=""
 OPEN_UNITY=0
 QUIT_UNITY=0
+PLAY_UNITY=0
 COMPILE_OSX=0
 COMPILE_IOS=0
 TARGET_PRESENT=0
 
-while getopts ":n:v:f:u:o:q:t:" opt; do
+while getopts ":n:v:f:u:o:q:t:p:(I'm " opt; do
 	case "$opt" in
 		n)
 			# we found a patch name
@@ -52,6 +53,11 @@ while getopts ":n:v:f:u:o:q:t:" opt; do
 			;;
         t) 
 			multi+=("$OPTARG")
+			;;
+		p)
+			# we found a patch name
+			echo "Will Play Unity"
+			PLAY_UNITY=1
 			;;
 	esac
 done
@@ -123,15 +129,21 @@ $XCODE_COMMAND
 echo "Moving targets into place..."
 if [[ $COMPILE_OSX == 1 ]]
 then
-	sudo chmod -R 777 hv-out/unity/build/macos/x86_64/Release/$MACLIB
+	if [ -e "./hv-out/unity/build/macos/x86_64/Release/"$MACLIB ]; then
+		sudo chmod -R 777 hv-out/unity/build/macos/x86_64/Release/$MACLIB
+	fi
+	
 	sudo mv -f hv-out/unity/build/macos/x86_64/Release/$MACLIB ../../Unity/Assets/Plugins/OSX/$MACLIB
 	echo "Moving wrapper into place..."
 	sudo mv -f ./hv-out/unity/build/macos/x86_64/Release/$WRAPPER ../../Unity/Assets/Plugins/$WRAPPER
 fi
 if [[ $COMPILE_IOS == 1 ]]
 then
-	sudo chmod -R 777 ./hv-out/unity/build/ios/armv7\ arm64/Release/libHv_gladly_AudioLib.a
-	sudo mv -f ./hv-out/unity/build/ios/armv7\ arm64/Release/libHv_gladly_AudioLib.a ../../Unity/Assets/Plugins/iOS/$IOSLIB
+	if [ -e "./hv-out/unity/build/ios/armv7\ arm64/Release/"$IOSLIB ]; then
+		sudo chmod -R 777 ./hv-out/unity/build/ios/armv7\ arm64/Release/$IOSLIB
+	fi
+
+	sudo mv -f ./hv-out/unity/build/ios/armv7\ arm64/Release/$IOSLIB ../../Unity/Assets/Plugins/iOS/$IOSLIB
 	if [[ $COMPILE_OSX == 0 ]]
 	then
 		echo "Moving wrapper into place..."
@@ -142,5 +154,11 @@ fi
 if [[ $OPEN_UNITY == 1 ]]
 then
 	echo "Opening Unity..."
-	"/Applications/Unity/Hub/Editor/2018.2.2f1/Unity.app/Contents/MacOS/Unity" -projectPath ../../Unity/ &
+	'"/Applications/Unity/Hub/Editor/2018.2.2f1/Unity.app/Contents/MacOS/Unity" -projectPath ../../Unity/ &'
+fi
+
+if [[ $PLAY_UNITY == 1 ]]
+then
+	echo "Playing Unity..."
+	osascript -e 'activate application "Unity"' -e 'tell application "System Events"' -e 'keystroke "p" using {command down}' -e 'end tell'
 fi
