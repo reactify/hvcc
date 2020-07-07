@@ -42,7 +42,7 @@ include $(BUILD_SHARED_LIBRARY)
 # libplugin.so
 include $(CLEAR_VARS)
 LOCAL_MODULE := {{patch_name}}_plugin
-LOCAL_MODULE_FILENAME := AudioPlugin_Hv_{{patch_name}}
+LOCAL_MODULE_FILENAME := libAudioPlugin_Hv_{{patch_name}}
 LOCAL_CPPFLAGS := -std=c++11
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../source
 LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/../../source/unity/*.c)
