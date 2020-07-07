@@ -121,7 +121,7 @@ fi
 XCODE_COMMAND=$XCODE_COMMAND" -quiet"
 
 echo "Compiling patch..."
-python ~/workspace/enzienaudio/hvcc-reactify/hvcc.py ./_main.pd -g unity -o hv-out/ -n $PATCH_NAME 
+python2 ~/workspace/enzienaudio/hvcc-reactify/hvcc.py ./_main.pd -g unity -o hv-out/ -n $PATCH_NAME 
 
 echo "Building Xcode project..."
 $XCODE_COMMAND
